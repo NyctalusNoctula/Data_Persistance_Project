@@ -18,10 +18,34 @@ public class MainManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
+    private string _bestScoreName;
+    private int _bestScorePoints;
     
+    [SerializeField]
+    private Text _bestScoreText;
+
+    [SerializeField]
+    private int _difficultyLevel;
+    private Color _ballColor;
+    
+    [SerializeField]
+    private Text _difficultytext;
+
+    [SerializeField]
+    private MeshRenderer Renderer;
+
     // Start is called before the first frame update
     void Start()
     {
+        LoadScore();
+        LoadColorAndDifficulty();
+        UpdateBestScoreText();
+        UpdateDifficultyText();
+
+        Material material = Renderer.material;
+
+        material.color = _ballColor;
+        
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -72,5 +96,47 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+    }
+
+    private void LoadScore()
+    {
+        Score data = SaveLoad.GetHighestScore();
+        if (data != null)
+        {
+            _bestScoreName = data.Name;
+            _bestScorePoints = data.Points;
+        }
+
+    }
+
+    public void LoadColorAndDifficulty()
+    {
+        if (Settings.Instance != null)
+        {
+            _difficultyLevel = Settings.Instance.DifficultyLevel;
+            _ballColor = Settings.Instance.BallColor;
+        }
+        else
+        {
+            _difficultyLevel = 1;
+            _ballColor = Color.white;
+        }
+    }
+
+    private void UpdateBestScoreText()
+    {
+        _bestScoreText.text = $"Best Score : {_bestScoreName} : {_bestScorePoints}";
+    }
+
+    private void UpdateDifficultyText()
+    {
+        Dictionary<int, string> difficultyConverter = new Dictionary<int, string>()
+        {
+            { 0 , "Easy" },
+            { 1, "Medium" },
+            { 2, "Hard" },
+        };
+
+        _difficultytext.text = $"{difficultyConverter[_difficultyLevel]}";
     }
 }
