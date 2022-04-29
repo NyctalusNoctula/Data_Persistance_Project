@@ -73,8 +73,21 @@ public class MainManager : MonoBehaviour
                 Vector3 forceDir = new Vector3(randomDirection, 1, 0);
                 forceDir.Normalize();
 
-                Ball.transform.SetParent(null);
-                Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
+                if (_difficultyLevel == 0)
+                {
+                    Ball.transform.SetParent(null);
+                    Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
+                }
+                else if (_difficultyLevel == 1)
+                {
+                    Ball.transform.SetParent(null);
+                    Ball.AddForce(forceDir * 4.0f, ForceMode.VelocityChange);
+                }
+                else if (_difficultyLevel == 2)
+                {
+                    Ball.transform.SetParent(null);
+                    Ball.AddForce(forceDir * 6.0f, ForceMode.VelocityChange);
+                }
             }
         }
         else if (m_GameOver)
@@ -96,6 +109,10 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        SaveLoad.SaveScore(Menu.Instance.nameInput, m_Points);
+
+        SceneManager.LoadScene(3);
     }
 
     private void LoadScore()
@@ -132,9 +149,9 @@ public class MainManager : MonoBehaviour
     {
         Dictionary<int, string> difficultyConverter = new Dictionary<int, string>()
         {
-            { 0 , "Easy" },
-            { 1, "Medium" },
-            { 2, "Hard" },
+            { 0, "Difficulty: Easy" },
+            { 1, "Difficulty: Medium" },
+            { 2, "Difficulty: Hard" },
         };
 
         _difficultytext.text = $"{difficultyConverter[_difficultyLevel]}";

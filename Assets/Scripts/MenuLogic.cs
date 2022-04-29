@@ -4,23 +4,16 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class MenuLogic : MonoBehaviour
 {
     public Dropdown DifficultyDropDown;
     public Dropdown ColorDropDown;
 
-    /*public void Awake()
+    public void SetNameString(InputField PlayerNameInput)
     {
-        /*if (SceneManager.GetActiveScene().buildIndex != 3) return;
-        DifficultyDropDown.AddOptions(new List<string> { "Easy", "Medium", "Hard"});
-    }*/
-
-
-
-    public void SetNameString(InputField InputField)
-    {
-        Menu.Instance.nameInput = InputField.text;
+        Menu.Instance.nameInput = PlayerNameInput.text;
     }
 
     public void SetDifficulty(Dropdown DifficultyDropDown)
@@ -87,6 +80,11 @@ public class MenuLogic : MonoBehaviour
     }
 
     public void LoadSettings()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public void LoadLeaderBoard()
     {
         SceneManager.LoadScene(3);
     }
